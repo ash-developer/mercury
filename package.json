@@ -1,5 +1,5 @@
 {
-  "name": "mercury",
+  "name": "mercury.js",
   "version": "0.0.1",
   "description": "Mercury project",
   "main": "src/index.js",
