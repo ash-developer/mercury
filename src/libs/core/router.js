@@ -1,8 +1,10 @@
 'use strict';
 
-var _ = require('lodash-node');
+var _ = require('lodash-node'),
+    path = require('path'),
+    fs = require('fs');
 
-function Router() {
+function Router(routesDir) {
     this.routes = [];
 
     this.get = this.use.bind(this, 'get');
@@ -10,7 +12,25 @@ function Router() {
     this.put = this.use.bind(this, 'put');
     this.delete = this.use.bind(this, 'delete');
 
+    if (routesDir) {
+        this.useDir(routesDir);
+    }
 }
+
+Router.prototype.useDir = function (routesDir) {
+    var self = this;
+
+    fs.readdirSync(routesDir).forEach(function (file) {
+        var absolutePath = routesDir + file;
+
+        if (fs.statSync(absolutePath).isDirectory()) {
+            self.useDir(absolutePath);
+        } else {
+            self.use(require(path.relative(__dirname, absolutePath)));
+        }
+    });
+
+};
 
 Router.prototype.use = function (verb, url, handler) {
     var self = this;
@@ -37,8 +57,8 @@ Router.prototype.use = function (verb, url, handler) {
             route.url = url + route.url;
             self.routes.push(route);
         });
-        self.routes = self.routes.concat();
     }
+
 };
 
 module.exports = Router;
