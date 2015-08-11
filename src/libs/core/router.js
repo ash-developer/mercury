@@ -4,6 +4,12 @@ var _ = require('lodash-node');
 
 function Router() {
     this.routes = [];
+
+    this.get = this.use.bind(this, 'get');
+    this.post = this.use.bind(this, 'post');
+    this.put = this.use.bind(this, 'put');
+    this.delete = this.use.bind(this, 'delete');
+
 }
 
 Router.prototype.use = function (verb, url, handler) {
@@ -12,6 +18,10 @@ Router.prototype.use = function (verb, url, handler) {
     if (arguments.length === 2) {
         handler = url;
         url = verb;
+        verb = 'get';
+    } else if (arguments.length === 1) {
+        handler = verb;
+        url = '';
         verb = 'get';
     }
 
@@ -30,10 +40,5 @@ Router.prototype.use = function (verb, url, handler) {
         self.routes = self.routes.concat();
     }
 };
-
-Router.prototype.get = Router.prototype.use.bind(this, 'get');
-Router.prototype.post = Router.prototype.use.bind(this, 'post');
-Router.prototype.put = Router.prototype.use.bind(this, 'put');
-Router.prototype.delete = Router.prototype.use.bind(this, 'delete');
 
 module.exports = Router;

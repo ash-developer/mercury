@@ -1,6 +1,6 @@
 'use strict';
 
-var mercury = require('mercury');
+var mercury = require('mercury.js');
 
 function Module() {
 
