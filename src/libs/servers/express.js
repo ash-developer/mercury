@@ -19,7 +19,7 @@ Express.prototype.initRoutes = function () {
 
 }
 
-Express.prototype.start() {
+Express.prototype.start = function () {
     this.initRoutes();
 
     http.listen(mercury.config.server.port, function() {
