@@ -4,14 +4,10 @@ var mercury = require('mercury');
 
 function Module() {
 
-    this.router = new mercury.Router();
-
 }
 
 Module.prototype.getRouter = function () {
-
-    return this.router;
-
+    return this.router || new mercury.Router();
 };
 
 module.exports = Module;

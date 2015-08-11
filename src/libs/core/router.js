@@ -3,46 +3,37 @@
 var _ = require('lodash-node');
 
 function Router() {
-
-    this.routes = {};
-
+    this.routes = [];
 }
 
-Router.prototype.use = function (url, handler) {
+Router.prototype.use = function (verb, url, handler) {
     var self = this;
 
+    if (arguments.length === 2) {
+        handler = url;
+        url = verb;
+        verb = 'get';
+    }
+
+    if (!handler) {
+        return;
+    }
+
+    //TODO: check existing pair verb, url for rewrite
     if (_.isFunction(handler)) {
-        self.routes['get'] = self.routes['get'] || {};
-        self.routes['get'][url] = handler;
-    } else {
-        self.routes['get'] = self.routes['get'] || {};
-        _.each(handler.routes['get'], function (routeHandler, routeUrl) {
-            self.routes['get'][url + routeUrl] = routeHandler;
+        self.routes.push({ verb: verb, url: url, handler: handler });
+    } else if (handler.routes) {
+        handler.routes.forEach(function (route) {
+            route.url = url + route.url;
+            self.routes.push(route);
         });
-        self.routes['post'] = self.routes['post'] || {};
-        _.each(handler.routes['post'], function (routeHandler, routeUrl) {
-            self.routes['post'][url + routeUrl] = routeHandler;
-        });
-        self.routes['put'] = self.routes['put'] || {};
-        _.each(handler.routes['put'], function (routeHandler, routeUrl) {
-            self.routes['put'][url + routeUrl] = routeHandler;
-        });
+        self.routes = self.routes.concat();
     }
 };
 
-Router.prototype.get = function (url, handler) {
-
-    var self = this;
-
-    self.routes['get'] = self.routes['get'] || {};
-    if (_.isFunction(handler)) {
-        self.routes['get'][url] = handler;
-    } else {
-        _.each(handler.routes['get'], function (routeHandler, routeUrl) {
-            self.routes['get'][url + routeUrl] = routeHandler;
-        });
-    }
-
-};
+Router.prototype.get = Router.prototype.use.bind(this, 'get');
+Router.prototype.post = Router.prototype.use.bind(this, 'post');
+Router.prototype.put = Router.prototype.use.bind(this, 'put');
+Router.prototype.delete = Router.prototype.use.bind(this, 'delete');
 
 module.exports = Router;
