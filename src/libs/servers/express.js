@@ -9,7 +9,7 @@ function Express() {
 
 }
 
-Express.prototype.initRoutes() {
+Express.prototype.initRoutes = function () {
 
     mercury.modules.forEach(function (module) {
         module.getRouter().routes.forEach(function (route) {
