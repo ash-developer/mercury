@@ -3,7 +3,7 @@
 var mercury = require('../mercury'),
     express = require('express'),
     app = express(),
-    http = require('http').Server(app),
+    server = require('http').Server(app),
     router = express.Router();
 
 function Express() {
@@ -11,7 +11,6 @@ function Express() {
 }
 
 function initRoutes() {
-
     mercury.modules.forEach(function (module) {
         module.getRouter().routes.forEach(function (route) {
             router[route.verb](route.url, route.handler);
@@ -28,8 +27,11 @@ function initRoutes() {
             error: error
         });
     });
-
 }
+
+Express.prototype.getServer = function () {
+    return server;
+};
 
 Express.prototype.getRouter = function () {
     initRoutes();
@@ -40,7 +42,9 @@ Express.prototype.getRouter = function () {
 Express.prototype.start = function () {
     app.use(this.getRouter());
 
-    http.listen(mercury.config.server.port, function() {
+    mercury.io.start();
+
+    server.listen(mercury.config.server.port, function() {
         console.log('Mercury server starts *:' + mercury.config.server.port);
     });
 };

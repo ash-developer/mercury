@@ -29,7 +29,6 @@ Router.prototype.useDir = function (routesDir) {
             self.use(require(path.relative(__dirname, absolutePath)));
         }
     });
-
 };
 
 Router.prototype.use = function (verb, url, handler) {
