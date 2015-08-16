@@ -31,14 +31,14 @@ function initRoutes() {
 
 }
 
-Express.prototype.getExpressRouter = function () {
+Express.prototype.getRouter = function () {
     initRoutes();
 
-    return this.router;
+    return router;
 };
 
 Express.prototype.start = function () {
-    app.use(this.getExpressRouter());
+    app.use(this.getRouter());
 
     http.listen(mercury.config.server.port, function() {
         console.log('Mercury server starts *:' + mercury.config.server.port);

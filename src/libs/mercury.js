@@ -23,8 +23,6 @@ Mercury.prototype.addModule = function (module) {
     this.modules.push(module);
 };
 
-Mercury.prototype.getExpressRouter = this.express.getExpressRouter;
-
 var mercury = new Mercury();
 
 module.exports = mercury;
