@@ -29,8 +29,8 @@ function initRoutes() {
     });
 }
 
-Express.prototype.getServer = function () {
-    return server;
+Express.prototype.getApp = function () {
+    return app;
 };
 
 Express.prototype.getRouter = function () {

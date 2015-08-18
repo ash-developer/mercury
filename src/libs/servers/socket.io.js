@@ -20,8 +20,8 @@ Context.prototype.broadcast = function () {
     this.io.emit(arguments);
 };
 
-SocketIO.prototype.start = function () {
-    var io = socketIO(mercury.express.getServer());
+SocketIO.prototype.start = function (server) {
+    var io = socketIO(server || mercury.express.getServer());
 
     io.on('connection', function (socket) {
         var context = new Context(io, socket);
