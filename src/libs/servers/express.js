@@ -2,6 +2,7 @@
 
 var mercury = require('../mercury'),
     express = require('express'),
+    bodyParser = require('body-parser'),
     app = express(),
     server = require('http').Server(app),
     router = express.Router();
@@ -44,6 +45,17 @@ Express.prototype.getRouter = function () {
 };
 
 Express.prototype.start = function () {
+    var bodyParserConfig = mercury.config.express && mercury.config.express['body-parser'] ? mercury.config.express['body-parser'] : false;
+
+    if (bodyParserConfig) {
+        if (bodyParserConfig.urlencoded) {
+            app.use(bodyParser.urlencoded(bodyParserConfig.urlencoded));
+        }
+        if (bodyParserConfig.json) {
+            app.use(bodyParser.json());
+        }
+    }
+
     app.use(this.getRouter());
 
     mercury.io.start();
