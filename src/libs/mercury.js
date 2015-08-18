@@ -26,8 +26,8 @@ mercury = new Mercury();
 
 module.exports = mercury;
 
-mercury.Module = require('./libs/core/module');
-mercury.Router = require('./libs/core/router');
-mercury.Socket = require('./libs/core/socket');
-mercury.express = require('./libs/servers/express');
-mercury.io = require('./libs/servers/socket.io');
+mercury.Module = require('./core/module');
+mercury.Router = require('./core/router');
+mercury.Socket = require('./core/socket');
+mercury.express = require('./servers/express');
+mercury.io = require('./servers/socket.io');
