@@ -33,6 +33,10 @@ Express.prototype.getApp = function () {
     return app;
 };
 
+Express.prototype.getServer = function () {
+    return server;
+};
+
 Express.prototype.getRouter = function () {
     initRoutes();
 
