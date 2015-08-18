@@ -7,6 +7,10 @@ function SocketIO() {
 
 }
 
+SocketIO.prototype.emit = function () {
+    this.io.emit(arguments);
+};
+
 function Context(io, socket) {
     this.io = io;
     this.socket = socket;
@@ -16,9 +20,7 @@ Context.prototype.emit = function () {
     this.socket.emit(arguments);
 };
 
-Context.prototype.broadcast = function () {
-    this.io.emit(arguments);
-};
+Context.prototype.broadcast = SocketIO.prototype.emit;
 
 SocketIO.prototype.start = function (server) {
     var io = socketIO(server || mercury.express.getServer());
