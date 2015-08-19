@@ -18,8 +18,20 @@ Socket.prototype.merge = function (absolutePath) {
         socket = require(path.relative(__dirname, absolutePath));
 
     socket.events.forEach(function (event) {
+        var baseName = null;
+        if (self.baseName) {
+            baseName = self.baseName;
+        }
+        if (event.baseName) {
+            if (baseName) {
+                baseName += '.' + event.baseName;
+            } else {
+                baseName = event.baseName;
+            }
+        }
+
         self.events.push(_.extend(event, {
-            baseName: self.baseName + '.' + event.baseName
+            baseName: baseName
         }));
     });
 };
