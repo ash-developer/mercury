@@ -8,7 +8,16 @@ var mercury = require('../mercury'),
     router = express.Router();
 
 function Express() {
+    var bodyParserConfig = mercury.config.express['body-parser'];
 
+    if (bodyParserConfig) {
+        if (bodyParserConfig.urlencoded) {
+            app.use(bodyParser.urlencoded(bodyParserConfig.urlencoded));
+        }
+        if (bodyParserConfig.json) {
+            app.use(bodyParser.json());
+        }
+    }
 }
 
 function initRoutes() {
@@ -45,17 +54,6 @@ Express.prototype.getRouter = function () {
 };
 
 Express.prototype.start = function () {
-    var bodyParserConfig = mercury.config.express && mercury.config.express['body-parser'] ? mercury.config.express['body-parser'] : false;
-
-    if (bodyParserConfig) {
-        if (bodyParserConfig.urlencoded) {
-            app.use(bodyParser.urlencoded(bodyParserConfig.urlencoded));
-        }
-        if (bodyParserConfig.json) {
-            app.use(bodyParser.json());
-        }
-    }
-
     app.use(this.getRouter());
 
     mercury.io.start();
