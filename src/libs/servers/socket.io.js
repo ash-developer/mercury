@@ -8,7 +8,7 @@ function SocketIO() {
 }
 
 SocketIO.prototype.emit = function () {
-    this.io.emit(arguments);
+    this.io.emit.apply(this.io, arguments);
 };
 
 function Context(io, socket) {
@@ -20,7 +20,7 @@ function Context(io, socket) {
 
 Context.prototype.emit = function () {
     arguments[0] = this.baseName ? this.baseName + '.' + arguments[0] : arguments[0];
-    this.socket.emit(arguments);
+    this.socket.emit.apply(this.socket, arguments);
 };
 
 Context.prototype.setBaseEventName = function (baseName) {
