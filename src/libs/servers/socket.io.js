@@ -23,7 +23,7 @@ Context.prototype.emit = function () {
     this.socket.emit(arguments);
 };
 
-Socket.prototype.setBaseEventName = function (baseName) {
+Context.prototype.setBaseEventName = function (baseName) {
     this.baseName = baseName;
 };
 

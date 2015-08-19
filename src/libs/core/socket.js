@@ -39,7 +39,7 @@ Socket.prototype.mergeDir = function (socketsDir) {
 };
 
 Socket.prototype.on = function (name, handler) {
-    this.events.push({ baseName: self.baseName, name: name, handler: handler });
+    this.events.push({ baseName: this.baseName, name: name, handler: handler });
 };
 
 module.exports = Socket;
