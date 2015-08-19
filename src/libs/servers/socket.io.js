@@ -14,10 +14,17 @@ SocketIO.prototype.emit = function () {
 function Context(io, socket) {
     this.io = io;
     this.socket = socket;
+
+    this.baseName = null;
 }
 
 Context.prototype.emit = function () {
+    arguments[0] = this.baseName ? this.baseName + '.' + arguments[0] : arguments[0];
     this.socket.emit(arguments);
+};
+
+Socket.prototype.setBaseEventName = function (baseName) {
+    this.baseName = baseName;
 };
 
 Context.prototype.broadcast = SocketIO.prototype.emit;
@@ -30,8 +37,8 @@ SocketIO.prototype.start = function (server) {
 
         mercury.modules.forEach(function (module) {
             module.getSocket().events.forEach(function (event) {
-
-                socket.on(event.name, function () {
+                var eventName = event.baseName ? event.baseName + '.' + event.name : event.name;
+                socket.on(eventName, function () {
                     event.handler.apply(context, arguments);
                 });
 
