@@ -4,11 +4,14 @@ var mercury = require('../mercury'),
     socketIO = require('socket.io');
 
 function SocketIO() {
+    this.io = null;
     this.events = [];
 }
 
 SocketIO.prototype.emit = function () {
-    this.io.emit.apply(this.io, arguments);
+    if (this.io !== null) {
+        this.io.emit.apply(this.io, arguments);
+    }
 };
 
 function Context(io, socket) {
@@ -30,8 +33,9 @@ Context.prototype.setBaseEventName = function (baseName) {
 Context.prototype.broadcast = SocketIO.prototype.emit;
 
 SocketIO.prototype.start = function (server) {
-    var io = socketIO(server || mercury.express.getServer()),
-        self = this;
+    var self = this;
+
+    self.io = socketIO(server || mercury.express.getServer());
 
     mercury.modules.forEach(function (module) {
         module.getSocket().events.forEach(function (event) {
@@ -40,12 +44,12 @@ SocketIO.prototype.start = function (server) {
     });
 
 
-    io.on('connection', function (socket) {
+    self.io.on('connection', function (socket) {
         self.events.forEach(function (event) {
             var eventName = event.baseName ? event.baseName + '.' + event.name : event.name;
-            
+
             socket.on(eventName, function () {
-                var context = new Context(io, socket);
+                var context = new Context(self.io, socket);
                 context.setBaseEventName(event.baseName);
                 event.handler.apply(context, arguments);
             });

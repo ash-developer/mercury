@@ -1,6 +1,6 @@
 {
   "name": "mercury.js",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "description": "Mercury project",
   "main": "src/index.js",
   "dependencies": {
