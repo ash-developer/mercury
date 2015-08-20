@@ -43,7 +43,6 @@ SocketIO.prototype.start = function (server) {
         });
     });
 
-
     self.io.on('connection', function (socket) {
         self.events.forEach(function (event) {
             var eventName = event.baseName ? event.baseName + '.' + event.name : event.name;

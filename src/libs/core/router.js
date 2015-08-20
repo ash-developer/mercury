@@ -18,9 +18,16 @@ function Router(routesDir) {
 }
 
 Router.prototype.useDir = function (routesDir) {
-    var self = this;
+    var self = this,
+        files;
 
-    fs.readdirSync(routesDir).forEach(function (file) {
+    try {
+        files = fs.readdirSync(routesDir);
+    } catch (error) {
+        files = [];
+    }
+
+    files.forEach(function (file) {
         var absolutePath = routesDir + file;
 
         if (fs.statSync(absolutePath).isDirectory()) {

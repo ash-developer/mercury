@@ -37,9 +37,16 @@ Socket.prototype.merge = function (absolutePath) {
 };
 
 Socket.prototype.mergeDir = function (socketsDir) {
-    var self = this;
+    var self = this,
+        files;
 
-    fs.readdirSync(socketsDir).forEach(function (file) {
+    try {
+        files = fs.readdirSync(socketsDir);
+    } catch (error) {
+        files = [];
+    }
+
+    files.forEach(function (file) {
         var absolutePath = socketsDir + file;
 
         if (fs.statSync(absolutePath).isDirectory()) {
