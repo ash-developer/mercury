@@ -10,7 +10,7 @@ function SocketIO() {
 
 SocketIO.prototype.emit = function () {
     if (this.io !== null) {
-        this.io.emit.apply(this.io, arguments);
+        this.io.sockets.emit.apply(this.io, arguments);
     }
 };
 
