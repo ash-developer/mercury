@@ -1,7 +1,8 @@
 'use strict';
 
 var mercury = require('../mercury'),
-    socketIO = require('socket.io');
+    socketIO = require('socket.io'),
+    currentSocket = null;
 
 function SocketIO() {
     this.io = null;
@@ -9,6 +10,12 @@ function SocketIO() {
 }
 
 SocketIO.prototype.emit = function () {
+    if (currentSocket) {
+        currentSocket.emit.apply(this.socket, arguments);
+    }
+};
+
+SocketIO.prototype.broadcast = function () {
     if (this.io !== null) {
         this.io.sockets.emit.apply(this.io.sockets, arguments);
     }
@@ -30,7 +37,7 @@ Context.prototype.setBaseEventName = function (baseName) {
     this.baseName = baseName;
 };
 
-Context.prototype.broadcast = SocketIO.prototype.emit;
+Context.prototype.broadcast = SocketIO.prototype.broadcast;
 
 SocketIO.prototype.start = function (server) {
     var self = this;
@@ -44,6 +51,8 @@ SocketIO.prototype.start = function (server) {
     });
 
     self.io.on('connection', function (socket) {
+        currentSocket = socket;
+
         self.events.forEach(function (event) {
             var eventName = event.baseName ? event.baseName + '.' + event.name : event.name;
 
