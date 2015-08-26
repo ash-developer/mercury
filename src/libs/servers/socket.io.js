@@ -11,7 +11,7 @@ function SocketIO() {
 
 SocketIO.prototype.emit = function () {
     if (currentSocket) {
-        currentSocket.emit.apply(this.socket, arguments);
+        currentSocket.emit.apply(currentSocket, arguments);
     }
 };
 
