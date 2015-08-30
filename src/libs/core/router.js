@@ -28,7 +28,7 @@ Router.prototype.useDir = function (routesDir) {
     }
 
     files.forEach(function (file) {
-        var absolutePath = routesDir + file;
+        var absolutePath = routesDir + '/' + file;
 
         if (fs.statSync(absolutePath).isDirectory()) {
             self.useDir(absolutePath);

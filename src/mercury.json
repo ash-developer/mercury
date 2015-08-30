@@ -1,8 +1,11 @@
 {
-    "server": {
-        "port": 3000
-    },
-    "express": {
-        "body-parser": false
-    }
+  "server": {
+    "port": 3000
+  },
+  "express": {
+    "body-parser": false
+  },
+  "db": {
+    "client": "mysql"
+  }
 }
