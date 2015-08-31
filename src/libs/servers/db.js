@@ -7,11 +7,21 @@ function DB() {
     this.queryBuilder = require('knex')(mercury.config.db);
 }
 
-DB.prototype.registerRepository = function (name, repository) {
+function initRepository(name) {
     if (!repositories[name]) {
         repositories[name] = new mercury.Repository();
         repositories[name].table = name;
+}
     }
+
+DB.prototype.repository = function (name) {
+    initRepository(name);
+
+    return repositories[name];
+};
+
+DB.prototype.registerRepository = function (name, repository) {
+    initRepository(name);
 
     if (repository) {
         repositories[name].table = repository.table;
