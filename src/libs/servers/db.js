@@ -1,7 +1,8 @@
 'use strict';
 
 var mercury = require('../mercury'),
-    repositories = {};
+    repositories = {},
+    util = require('util');
 
 function DB() {
     this.queryBuilder = require('knex')(mercury.config.db);
@@ -9,22 +10,22 @@ function DB() {
 
 function initRepository(name) {
     if (!repositories[name]) {
-        repositories[name] = new mercury.Repository();
-        repositories[name].table = name;
+        repositories[name] = mercury.Repository;
+        repositories[name].prototype.table = name;
 }
     }
 
 DB.prototype.repository = function (name) {
     initRepository(name);
 
-    return repositories[name];
+    return new repositories[name]();
 };
 
 DB.prototype.registerRepository = function (name, repository) {
     initRepository(name);
 
     if (repository) {
-        repositories[name].table = repository.table;
+        repositories[name].prototype.table = repository.table;
         util.inherits(repositories[name], repository);
     }
 };
