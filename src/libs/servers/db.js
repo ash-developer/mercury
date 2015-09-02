@@ -2,7 +2,8 @@
 
 var mercury = require('../mercury'),
     repositories = {},
-    util = require('util');
+    util = require('util'),
+    _ = require('lodash-node');
 
 function DB() {
     this.queryBuilder = require('knex')(mercury.config.db);
@@ -25,8 +26,9 @@ DB.prototype.registerRepository = function (name, repository) {
     initRepository(name);
 
     if (repository) {
-        repositories[name].prototype.table = repository.table;
-        util.inherits(repositories[name], repository);
+        _.each(new repository(), function (value, key) {
+            repositories[name].prototype[key] = value;
+        });
     }
 };
 
