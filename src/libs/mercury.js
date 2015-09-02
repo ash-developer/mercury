@@ -31,5 +31,5 @@ mercury.Router = require('./core/router');
 mercury.Socket = require('./core/socket');
 mercury.express = require('./servers/express');
 mercury.io = require('./servers/socket.io');
-mercury.db = require('./servers/db');
 mercury.Repository = require('./core/repository');
+mercury.db = require('./servers/db');

@@ -12,8 +12,8 @@ function initRepository(name) {
     if (!repositories[name]) {
         repositories[name] = mercury.Repository;
         repositories[name].prototype.table = name;
-}
     }
+}
 
 DB.prototype.repository = function (name) {
     initRepository(name);
