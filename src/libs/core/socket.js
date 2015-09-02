@@ -47,7 +47,7 @@ Socket.prototype.mergeDir = function (socketsDir) {
     }
 
     files.forEach(function (file) {
-        var absolutePath = socketsDir + file;
+        var absolutePath = socketsDir + '/' + file;
 
         if (fs.statSync(absolutePath).isDirectory()) {
             self.mergeDir(absolutePath);
