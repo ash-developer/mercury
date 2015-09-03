@@ -23,8 +23,8 @@ Repository.prototype.create = function (attributes, callback) {
     }).catch(callback);
 };
 
-Repository.prototype.update = function (attributes, callback) {
-    mercury.db.queryBuilder(this.table).update(attributes).then(function (response) {
+Repository.prototype.update = function (identifier, attributes, callback) {
+    mercury.db.queryBuilder(this.table).update(attributes).where(identifier).then(function (response) {
         callback(null, response);
     }).catch(callback);
 };
