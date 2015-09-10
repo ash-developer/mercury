@@ -30,6 +30,9 @@ DB.prototype.registerRepository = function (name, repository) {
         _.each(new repository(), function (value, key) {
             repositories[name].prototype[key] = value;
         });
+        _.each(repository.prototype, function (value, key) {
+            repositories[name].prototype[key] = value;
+        });
     }
 };
 
