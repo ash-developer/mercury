@@ -11,9 +11,9 @@ function DB() {
 
 function initRepository(name) {
     if (!repositories[name]) {
-        repositories[name] = mercury.Repository;
+        repositories[name] = function () {};
+        util.inherits(repositories[name], mercury.Repository);
         repositories[name].prototype.table = name;
-        repositories[name].prototype.super_ = new repositories[name]();
     }
 }
 
