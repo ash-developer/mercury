@@ -13,10 +13,7 @@ function initRepository(name) {
     if (!repositories[name]) {
         repositories[name] = mercury.Repository;
         repositories[name].prototype.table = name;
-
-        var super = new repositories[name]();
-
-        repositories[name].prototype.super_ = super;
+        repositories[name].prototype.super_ = new repositories[name]();
     }
 }
 
