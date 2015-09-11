@@ -9,6 +9,7 @@ function SocketIO() {
     this.events = [];
 }
 
+//TODO: it is bug, currentSocket is last connected user
 SocketIO.prototype.emit = function () {
     if (currentSocket) {
         currentSocket.emit.apply(currentSocket, arguments);
@@ -30,6 +31,10 @@ function Context(io, socket) {
 
 Context.prototype.emit = function () {
     arguments[0] = this.baseName ? this.baseName + '.' + arguments[0] : arguments[0];
+    this.socket.emit.apply(this.socket, arguments);
+};
+
+Context.prototype.straightEmit = function () {
     this.socket.emit.apply(this.socket, arguments);
 };
 
