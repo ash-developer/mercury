@@ -27,6 +27,32 @@ function initRoutes() {
         });
     });
 
+    if (mercury.config.express.cors) {
+        var corsConfig = mercury.config.express.cors;
+
+        app.use(function (req, res, next) {
+            if (corsConfig.origin) {
+                res.setHeader('Access-Control-Allow-Origin', corsConfig.origin);
+            }
+            if (corsConfig.methods) {
+                res.setHeader('Access-Control-Allow-Methods', corsConfig.methods);
+            }
+            if (corsConfig.headers) {
+                res.setHeader('Access-Control-Allow-Headers', corsConfig.headers);
+            }
+            if (corsConfig.credentials) {
+                res.setHeader('Access-Control-Allow-Credentials', corsConfig.credentials);
+            }
+
+            if (req.method === 'OPTIONS') {
+                res.sendStatus(200);
+            } else {
+                mercury.logger.info(req.method + ': ' + req.url);
+                next();
+            }
+        });
+    }
+
     router.use(function (req, res, next) {
         var error = new Error('Not Found');
         error.status = 404;
