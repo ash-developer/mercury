@@ -7,6 +7,8 @@ var path = require('path'),
     winston = require('winston');
 
 function Mercury() {
+    this.mainPath = path.dirname(require.main.filename);
+
     var environment = process.env.NODE_ENV,
         configPath = this.mainPath + '/mercury' + (environment ? '_' + environment : ''),
         localConfig = {};
@@ -15,9 +17,7 @@ function Mercury() {
         localConfig = require(configPath)
     } catch (e) {}
 
-    this.mainPath = path.dirname(require.main.filename);
     this.config = _.extend(require('../mercury'), localConfig);
-
     this.modules = [];
 }
 
