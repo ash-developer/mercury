@@ -33,14 +33,6 @@ mercury = new Mercury();
 
 module.exports = mercury;
 
-mercury.Module = require('./core/module');
-mercury.Router = require('./core/router');
-mercury.Socket = require('./core/socket');
-mercury.express = require('./servers/express');
-mercury.io = require('./servers/socket.io');
-mercury.Repository = require('./core/repository');
-mercury.db = require('./servers/db');
-
 var winstonLogger,
     transports = [];
 
@@ -59,3 +51,10 @@ winstonLogger = new winston.Logger({
 });
 
 mercury.logger = winstonLogger;
+mercury.Module = require('./core/module');
+mercury.Router = require('./core/router');
+mercury.Socket = require('./core/socket');
+mercury.express = require('./servers/express');
+mercury.io = require('./servers/socket.io');
+mercury.Repository = require('./core/repository');
+mercury.db = require('./servers/db');
