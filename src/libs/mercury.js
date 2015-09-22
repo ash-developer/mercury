@@ -1,16 +1,22 @@
 'use strict';
 
 var path = require('path'),
+    fs = require('fs'),
     _ = require('lodash-node'),
     mercury,
     winston = require('winston');
 
 function Mercury() {
+    var environment = process.env.NODE_ENV,
+        configPath = this.mainPath + '/mercury' + (environment ? '_' + environment : ''),
+        localConfig = {};
+
+    try {
+        localConfig = require(configPath)
+    } catch (e) {}
+
     this.mainPath = path.dirname(require.main.filename);
-    this.config = _.extend(
-        require('../mercury'),
-        require(this.mainPath + '/mercury')
-    );
+    this.config = _.extend(require('../mercury'), localConfig);
 
     this.modules = [];
 }
