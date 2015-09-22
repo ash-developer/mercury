@@ -2,7 +2,8 @@
 
 var path = require('path'),
     _ = require('lodash-node'),
-    mercury;
+    mercury,
+    winston = require('winston');
 
 function Mercury() {
     this.mainPath = path.dirname(require.main.filename);
@@ -33,3 +34,22 @@ mercury.express = require('./servers/express');
 mercury.io = require('./servers/socket.io');
 mercury.Repository = require('./core/repository');
 mercury.db = require('./servers/db');
+
+var winstonLogger,
+    transports = [];
+
+if (mercury.config.logs) {
+    _.each((mercury.config.logs.file || []), function (level, filename) {
+        transports.push(new winston.transports.File({ filename: mercury.mainPath + '/' + filename, level: level }));
+    });
+}
+
+if (transports.length === 0) {
+    transports.push(new winston.transports.Console({ level: 'silly' }));
+}
+
+winstonLogger = new winston.Logger({
+    transports: transports
+});
+
+mercury.logger = winstonLogger;
