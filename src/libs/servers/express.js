@@ -21,12 +21,6 @@ function Express() {
 }
 
 function initRoutes() {
-    mercury.modules.forEach(function (module) {
-        module.getRouter().routes.forEach(function (route) {
-            router[route.verb](route.url, route.handler);
-        });
-    });
-
     if (mercury.config.express.cors) {
         var corsConfig = mercury.config.express.cors;
 
@@ -52,6 +46,12 @@ function initRoutes() {
             }
         });
     }
+
+    mercury.modules.forEach(function (module) {
+        module.getRouter().routes.forEach(function (route) {
+            router[route.verb](route.url, route.handler);
+        });
+    });
 
     router.use(function (req, res, next) {
         var error = new Error('Not Found');
