@@ -18,9 +18,7 @@ function Express() {
             app.use(bodyParser.json());
         }
     }
-}
 
-function initRoutes() {
     if (mercury.config.express.cors) {
         var corsConfig = mercury.config.express.cors;
 
@@ -46,7 +44,9 @@ function initRoutes() {
             }
         });
     }
+}
 
+function initRoutes() {
     mercury.modules.forEach(function (module) {
         module.getRouter().routes.forEach(function (route) {
             router[route.verb](route.url, route.handler);
