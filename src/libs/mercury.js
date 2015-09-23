@@ -1,10 +1,12 @@
 'use strict';
 
 var path = require('path'),
-    fs = require('fs'),
     _ = require('lodash-node'),
     mercury,
-    winston = require('winston');
+    winston = require('winston'),
+    events = new (require('events').EventEmitter)();
+
+
 
 function Mercury() {
     this.mainPath = path.dirname(require.main.filename);
@@ -23,6 +25,14 @@ function Mercury() {
 
 Mercury.prototype.start = function () {
     this.express.start();
+};
+
+Mercury.prototype.on = function () {
+    events.on.apply(events, arguments);
+};
+
+Mercury.prototype.emit = function () {
+    events.emit.apply(events, arguments);
 };
 
 Mercury.prototype.addModule = function (module) {
