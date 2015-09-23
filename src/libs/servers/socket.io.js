@@ -1,20 +1,12 @@
 'use strict';
 
 var mercury = require('../mercury'),
-    socketIO = require('socket.io'),
-    currentSocket = null;
+    socketIO = require('socket.io');
 
 function SocketIO() {
     this.io = null;
     this.events = [];
 }
-
-//TODO: it is bug, currentSocket is last connected user
-SocketIO.prototype.emit = function () {
-    if (currentSocket) {
-        currentSocket.emit.apply(currentSocket, arguments);
-    }
-};
 
 SocketIO.prototype.broadcast = function () {
     if (this.io !== null) {
@@ -56,7 +48,7 @@ SocketIO.prototype.start = function (server) {
     });
 
     self.io.on('connection', function (socket) {
-        currentSocket = socket;
+        mercury.emit('connection', socket);
 
         self.events.forEach(function (event) {
             var eventName = event.baseName ? event.baseName + '.' + event.name : event.name;
