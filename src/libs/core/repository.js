@@ -1,12 +1,40 @@
 'use strict';
 
-var mercury = require('../mercury');
+var mercury = require('../mercury'),
+    _ = require('lodash-node');
 
 function Repository() {
 }
 
-Repository.prototype.list = function (callback) {
-    mercury.db.queryBuilder(this.table).select().then(function (response) {
+Repository.prototype.list = function (conditions, callback) {
+    var query = mercury.db.queryBuilder(this.table).select();
+
+    if (conditions) {
+        if (conditions.where) {
+            _.each(conditions.where, function (values, key) {
+                if (_.isArray(values)) {
+                    values.forEach(function (value) {
+                        query.where(key, value);
+                    });
+                } else {
+                    query.where(key, values);
+                }
+            });
+        }
+        if (conditions.whereNot) {
+            _.each(conditions.whereNot, function (values, key) {
+                if (_.isArray(values)) {
+                    values.forEach(function (value) {
+                        query.whereNot(key, value);
+                    });
+                } else {
+                    query.whereNot(key, values);
+                }
+            });
+        }
+    }
+
+    return query.then(function (response) {
         callback(null, response);
     }).catch(callback);
 };
