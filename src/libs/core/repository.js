@@ -10,6 +10,8 @@ function Repository() {
 Repository.prototype.list = function (conditions, callback) {
     var query = mercury.db.queryBuilder(this.table).select();
 
+    callback = callback || function () {};
+
     if (conditions) {
         if (conditions.where) {
             _.each(conditions.where, function (values, key) {
