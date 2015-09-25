@@ -7,17 +7,18 @@ function Repository() {
 }
 
 Repository.prototype.list = function (conditions) {
-    var query = mercury.db.queryBuilder(this.table).select();
+    var self = this,
+        query = mercury.db.queryBuilder(this.table).select();
 
     if (conditions) {
         if (conditions.where) {
             _.each(conditions.where, function (values, key) {
                 if (_.isArray(values)) {
                     values.forEach(function (value) {
-                        query.where(key, value);
+                        query.where(self.table + '.' + key, value);
                     });
                 } else {
-                    query.where(key, values);
+                    query.where(self.table + '.' + key, values);
                 }
             });
         }
@@ -25,10 +26,10 @@ Repository.prototype.list = function (conditions) {
             _.each(conditions.whereNot, function (values, key) {
                 if (_.isArray(values)) {
                     values.forEach(function (value) {
-                        query.whereNot(key, value);
+                        query.whereNot(self.table + '.' + key, value);
                     });
                 } else {
-                    query.whereNot(key, values);
+                    query.whereNot(self.table + '.' + key, values);
                 }
             });
         }
