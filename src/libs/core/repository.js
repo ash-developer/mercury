@@ -1,16 +1,13 @@
 'use strict';
 
 var mercury = require('../mercury'),
-    _ = require('lodash-node'),
-    Promise = require('bluebird');
+    _ = require('lodash-node');
 
 function Repository() {
 }
 
-Repository.prototype.list = function (conditions, callback) {
+Repository.prototype.list = function (conditions) {
     var query = mercury.db.queryBuilder(this.table).select();
-
-    callback = callback || function () {};
 
     if (conditions) {
         if (conditions.where) {
@@ -37,17 +34,7 @@ Repository.prototype.list = function (conditions, callback) {
         }
     }
 
-    var resolver = Promise.pending();
-
-    query.then(function (response) {
-        resolver.resolve(response);
-        callback(null, response);
-    }).catch(function (error) {
-        resolver.reject(error);
-        callback(error);
-    });
-
-    return resolver.promise;
+    return query;
 };
 
 Repository.prototype.get = function (identifier, callback) {
