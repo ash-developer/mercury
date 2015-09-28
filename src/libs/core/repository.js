@@ -1,7 +1,8 @@
 'use strict';
 
 var mercury = require('../mercury'),
-    _ = require('lodash-node');
+    _ = require('lodash-node'),
+    Promise = require('bluebird');
 
 function Repository() {
 }
