@@ -14,10 +14,10 @@ Repository.prototype.list = function (conditions, callback) {
             _.each(conditions.where, function (values, key) {
                 if (_.isArray(values)) {
                     values.forEach(function (value) {
-                        query.where(self.table + '.' + key, value);
+                        query = query.where(self.table + '.' + key, value);
                     });
                 } else {
-                    query.where(self.table + '.' + key, values);
+                    query = query.where(self.table + '.' + key, values);
                 }
             });
         }
@@ -25,12 +25,21 @@ Repository.prototype.list = function (conditions, callback) {
             _.each(conditions.whereNot, function (values, key) {
                 if (_.isArray(values)) {
                     values.forEach(function (value) {
-                        query.whereNot(self.table + '.' + key, value);
+                        query = query.whereNot(self.table + '.' + key, value);
                     });
                 } else {
-                    query.whereNot(self.table + '.' + key, values);
+                    query = query.whereNot(self.table + '.' + key, values);
                 }
             });
+        }
+        if (conditions.limit) {
+            query = query.limit(parseInt(conditions.limit));
+        }
+        if (conditions.offset) {
+            query = query.offset(parseInt(conditions.offset));
+        }
+        if (conditions.order) {
+            query = query.orderByRaw(conditions.order);
         }
     }
 
@@ -48,10 +57,10 @@ Repository.prototype.count = function (conditions, callback) {
             _.each(conditions.where, function (values, key) {
                 if (_.isArray(values)) {
                     values.forEach(function (value) {
-                        query.where(self.table + '.' + key, value);
+                        query = query.where(self.table + '.' + key, value);
                     });
                 } else {
-                    query.where(self.table + '.' + key, values);
+                    query = query.where(self.table + '.' + key, values);
                 }
             });
         }
@@ -59,10 +68,10 @@ Repository.prototype.count = function (conditions, callback) {
             _.each(conditions.whereNot, function (values, key) {
                 if (_.isArray(values)) {
                     values.forEach(function (value) {
-                        query.whereNot(self.table + '.' + key, value);
+                        query = query.whereNot(self.table + '.' + key, value);
                     });
                 } else {
-                    query.whereNot(self.table + '.' + key, values);
+                    query = query.whereNot(self.table + '.' + key, values);
                 }
             });
         }
@@ -104,10 +113,10 @@ Repository.prototype.remove = function (identifier, callback) {
             _.each(conditions.where, function (values, key) {
                 if (_.isArray(values)) {
                     values.forEach(function (value) {
-                        query.where(self.table + '.' + key, value);
+                        query = query.where(self.table + '.' + key, value);
                     });
                 } else {
-                    query.where(self.table + '.' + key, values);
+                    query = query.where(self.table + '.' + key, values);
                 }
             });
         }
@@ -115,10 +124,10 @@ Repository.prototype.remove = function (identifier, callback) {
             _.each(conditions.whereNot, function (values, key) {
                 if (_.isArray(values)) {
                     values.forEach(function (value) {
-                        query.whereNot(self.table + '.' + key, value);
+                        query = query.whereNot(self.table + '.' + key, value);
                     });
                 } else {
-                    query.whereNot(self.table + '.' + key, values);
+                    query = query.whereNot(self.table + '.' + key, values);
                 }
             });
         }
