@@ -61,6 +61,7 @@ winstonLogger = new winston.Logger({
 });
 
 mercury.logger = winstonLogger;
+mercury.Stream = require('./core/stream');
 mercury.Module = require('./core/module');
 mercury.Router = require('./core/router');
 mercury.Socket = require('./core/socket');
