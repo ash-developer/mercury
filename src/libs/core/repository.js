@@ -39,6 +39,40 @@ Repository.prototype.list = function (conditions, callback) {
     }).catch(callback);
 };
 
+Repository.prototype.count = function (conditions, callback) {
+    var self = this,
+        query = mercury.db.queryBuilder(this.table);
+
+    if (conditions) {
+        if (conditions.where) {
+            _.each(conditions.where, function (values, key) {
+                if (_.isArray(values)) {
+                    values.forEach(function (value) {
+                        query.where(self.table + '.' + key, value);
+                    });
+                } else {
+                    query.where(self.table + '.' + key, values);
+                }
+            });
+        }
+        if (conditions.whereNot) {
+            _.each(conditions.whereNot, function (values, key) {
+                if (_.isArray(values)) {
+                    values.forEach(function (value) {
+                        query.whereNot(self.table + '.' + key, value);
+                    });
+                } else {
+                    query.whereNot(self.table + '.' + key, values);
+                }
+            });
+        }
+    }
+
+    query.count('ROWID as COUNT').then(function (rows) {
+        callback(null, rows[0].COUNT);
+    }).catch(callback);
+};
+
 Repository.prototype.get = function (identifier, callback) {
     mercury.db.queryBuilder(this.table).select().where(identifier).limit(1).then(function (response) {
         if (response.length === 0) {
