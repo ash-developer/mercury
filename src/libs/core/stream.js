@@ -23,3 +23,5 @@ Stream.prototype.write = function (chunk) {
 Stream.prototype.end = function () {
     this.emit('end');
 };
+
+module.exports = Stream;
