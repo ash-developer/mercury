@@ -5,15 +5,15 @@ function Stream() {
 }
 
 Stream.prototype.on = function () {
-    this.events.on.apply(events, arguments);
+    this.events.on.apply(this.events, arguments);
 };
 
 Stream.prototype.emit = function () {
-    this.events.emit.apply(events, arguments);
+    this.events.emit.apply(this.events, arguments);
 };
 
 Stream.prototype.once = function () {
-    this.events.once.apply(events, arguments);
+    this.events.once.apply(this.events, arguments);
 };
 
 Stream.prototype.write = function (chunk) {
