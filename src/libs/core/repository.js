@@ -1,6 +1,7 @@
 'use strict';
 
-var mercury = require('../mercury');
+var mercury = require('../mercury'),
+    _ = require('lodash-node');
 
 function Repository() {
 }
@@ -30,6 +31,11 @@ Repository.prototype.list = function (conditions, callback) {
                 } else {
                     query = query.whereNot(self.table + '.' + key, values);
                 }
+            });
+        }
+        if (conditions.whereRaw) {
+            _.each(conditions.whereRaw, function (value) {
+                query = query.whereRaw(value);
             });
         }
         if (conditions.limit) {
@@ -73,6 +79,11 @@ Repository.prototype.count = function (conditions, callback) {
                 } else {
                     query = query.whereNot(self.table + '.' + key, values);
                 }
+            });
+        }
+        if (conditions.whereRaw) {
+            _.each(conditions.whereRaw, function (value) {
+                query = query.whereRaw(value);
             });
         }
     }
