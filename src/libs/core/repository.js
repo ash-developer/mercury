@@ -116,35 +116,7 @@ Repository.prototype.update = function (identifier, attributes, callback) {
 };
 
 Repository.prototype.remove = function (identifier, callback) {
-    var self = this,
-        query = mercury.db.queryBuilder(this.table).del().where(identifier);
-
-    if (conditions) {
-        if (conditions.where) {
-            _.each(conditions.where, function (values, key) {
-                if (_.isArray(values)) {
-                    values.forEach(function (value) {
-                        query = query.where(self.table + '.' + key, value);
-                    });
-                } else {
-                    query = query.where(self.table + '.' + key, values);
-                }
-            });
-        }
-        if (conditions.whereNot) {
-            _.each(conditions.whereNot, function (values, key) {
-                if (_.isArray(values)) {
-                    values.forEach(function (value) {
-                        query = query.whereNot(self.table + '.' + key, value);
-                    });
-                } else {
-                    query = query.whereNot(self.table + '.' + key, values);
-                }
-            });
-        }
-    }
-
-    query.then(function (response) {
+    mercury.db.queryBuilder(this.table).del().where(identifier).then(function (response) {
         callback(null, response);
     }).catch(callback);
 };
