@@ -4,7 +4,8 @@ var path = require('path'),
     _ = require('lodash-node'),
     mercury,
     winston = require('winston'),
-    events = new (require('events').EventEmitter)();
+    events = new (require('events').EventEmitter)(),
+    services = {};
 
 
 
@@ -22,6 +23,14 @@ function Mercury() {
     this.config = _.extend(require('../mercury'), localConfig);
     this.modules = [];
 }
+
+Mercury.prototype.service = function (name, service) {
+    if (service) {
+        services[name] = service;
+    } else {
+        return services[name];
+    }
+};
 
 Mercury.prototype.start = function () {
     this.express.start();
